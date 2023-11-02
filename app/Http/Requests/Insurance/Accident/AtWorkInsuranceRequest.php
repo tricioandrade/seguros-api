@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Insurance\Accident;
 
+use App\Enums\Insurance\Vehicle\FractionationTypesEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class AtWorkInsuranceRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class AtWorkInsuranceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,11 @@ class AtWorkInsuranceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'employees'         => 'required|integer',
+            'eac'               => 'required|string',
+            'salary'            => 'required|numeric',
+            'fractionation'     => ['required', new Enum(FractionationTypesEnum::class)],
+            'value'             => 'required|numeric',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Insurance\Accident;
 
 use App\Exceptions\Auth\UnauthorizedException;
+use App\Exceptions\DatabaseException;
 use App\Models\Insurance\Accident\AtWorkInsuranceModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,6 +22,8 @@ class AtWorkInsuranceService
     /**
      * Get all data from the database
      *
+     * @return AtWorkInsuranceModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function getAll(): AtWorkInsuranceModel|Collection
@@ -32,11 +35,15 @@ class AtWorkInsuranceService
     /**
      * Create a new data in the database
      *
+     * @param array $attributes
+     * @return mixed
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
-    public function create(array $attributes) {
+    public function create(array $attributes): mixed
+    {
         if (!$this->isAdmin()) throw new UnauthorizedException();
-
+        $attributes->user_id = auth()->id();
         return $this->createData($attributes);
     }
 
@@ -45,6 +52,7 @@ class AtWorkInsuranceService
      *
      * @param int $id
      * @return AtWorkInsuranceModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function getById(int $id): AtWorkInsuranceModel|Collection
@@ -72,6 +80,7 @@ class AtWorkInsuranceService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function delete(int $id): mixed

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Insurance\Accident;
 
+use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Http\Requests\Insurance\Accident\AtWorkInsuranceRequest;
@@ -33,6 +34,7 @@ class AtWorkInsuranceController extends Controller
      * @param AtWorkInsuranceRequest $atWorkInsuranceRequest
      * @return AtWorkInsuranceResource
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function store(AtWorkInsuranceRequest $atWorkInsuranceRequest): AtWorkInsuranceResource
     {
