@@ -6,7 +6,7 @@ use App\Enums\Insurance\Vehicle\FractionationTypesEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class AtWorkInsuranceRequest extends FormRequest
+class AccidentWorkInsuranceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

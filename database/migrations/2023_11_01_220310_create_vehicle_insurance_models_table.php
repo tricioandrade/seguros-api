@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('cylinder_capacity');
             $table->enum('fractionation', FractionationTypesEnum::values());
-            $table->string('value');
+            $table->decimal('value');
             $table->softDeletes();
             $table->timestamps();
         });

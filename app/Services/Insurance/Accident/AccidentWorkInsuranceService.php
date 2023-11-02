@@ -4,29 +4,29 @@ namespace App\Services\Insurance\Accident;
 
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Exceptions\DatabaseException;
-use App\Models\Insurance\Accident\AtWorkInsuranceModel;
+use App\Models\Insurance\Accident\AccidentWorkInsuranceModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\Common\Auth\VerifyUserTrait;
 
-class AtWorkInsuranceService
+class AccidentWorkInsuranceService
 {
     use CrudTrait, VerifyUserTrait;
 
     public function __construct()
     {
         $this->relations    = [];
-        $this->model        = new AtWorkInsuranceModel();
+        $this->model        = new AccidentWorkInsuranceModel();
     }
 
     /**
      * Get all data from the database
      *
-     * @return AtWorkInsuranceModel|Collection
+     * @return AccidentWorkInsuranceModel|Collection
      * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function getAll(): AtWorkInsuranceModel|Collection
+    public function getAll(): AccidentWorkInsuranceModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getAllData();
@@ -51,11 +51,11 @@ class AtWorkInsuranceService
      * Get a data from the database by id
      *
      * @param int $id
-     * @return AtWorkInsuranceModel|Collection
+     * @return AccidentWorkInsuranceModel|Collection
      * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function getById(int $id): AtWorkInsuranceModel|Collection
+    public function getById(int $id): AccidentWorkInsuranceModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getByIdentity($id);
@@ -66,10 +66,10 @@ class AtWorkInsuranceService
      *
      * @param array $attributes
      * @param int $id
-     * @return AtWorkInsuranceModel|Collection
+     * @return AccidentWorkInsuranceModel|Collection
      * @throws UnauthorizedException
      */
-    public function update(array $attributes, int $id): AtWorkInsuranceModel|Collection
+    public function update(array $attributes, int $id): AccidentWorkInsuranceModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return  $this->updateData($attributes, $id);

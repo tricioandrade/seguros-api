@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Insurance\Accident;
 use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\Accident\AtWorkInsuranceRequest;
-use App\Http\Resources\Insurance\Accident\AtWorkInsuranceResource;
-use App\Services\Insurance\Accident\AtWorkInsuranceService;
+use App\Http\Requests\Insurance\Accident\AccidentWorkInsuranceRequest;
+use App\Http\Resources\Insurance\Accident\AccidentWorkInsuranceResource;
+use App\Services\Insurance\Accident\AccidentWorkInsuranceService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class AtWorkInsuranceController extends Controller
+class AccidentWorkInsuranceController extends Controller
 {
 
     public function __construct(
-        public AtWorkInsuranceService $atWorkInsuranceService
+        public AccidentWorkInsuranceService $atWorkInsuranceService
     ){}
 
     /**
@@ -25,50 +25,50 @@ class AtWorkInsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return AtWorkInsuranceResource::collection($this->atWorkInsuranceService->getAll());
+        return AccidentWorkInsuranceResource::collection($this->atWorkInsuranceService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param AtWorkInsuranceRequest $atWorkInsuranceRequest
-     * @return AtWorkInsuranceResource
+     * @param AccidentWorkInsuranceRequest $atWorkInsuranceRequest
+     * @return AccidentWorkInsuranceResource
      * @throws UnauthorizedException
      * @throws DatabaseException
      */
-    public function store(AtWorkInsuranceRequest $atWorkInsuranceRequest): AtWorkInsuranceResource
+    public function store(AccidentWorkInsuranceRequest $atWorkInsuranceRequest): AccidentWorkInsuranceResource
     {
         $atWorkInsuranceRequest->validated($atWorkInsuranceRequest->all());
         $atWorkInsurance = $this->atWorkInsuranceService->create($atWorkInsuranceRequest->all());
-        return new AtWorkInsuranceResource($atWorkInsurance);
+        return new AccidentWorkInsuranceResource($atWorkInsurance);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return AtWorkInsuranceResource
+     * @return AccidentWorkInsuranceResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): AtWorkInsuranceResource
+    public function show(int $id): AccidentWorkInsuranceResource
     {
         $atWorkInsurance = $this->atWorkInsuranceService->getById($id);
-        return new AtWorkInsuranceResource($atWorkInsurance);
+        return new AccidentWorkInsuranceResource($atWorkInsurance);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param AtWorkInsuranceRequest $atWorkInsuranceRequest
+     * @param AccidentWorkInsuranceRequest $atWorkInsuranceRequest
      * @param int $id
-     * @return AtWorkInsuranceResource
+     * @return AccidentWorkInsuranceResource
      * @throws UnauthorizedException
      */
-    public function update(AtWorkInsuranceRequest $atWorkInsuranceRequest, int $id): AtWorkInsuranceResource
+    public function update(AccidentWorkInsuranceRequest $atWorkInsuranceRequest, int $id): AccidentWorkInsuranceResource
     {
         $atWorkInsuranceRequest->validated($atWorkInsuranceRequest->all());
         $atWorkInsurance = $this->atWorkInsuranceService->update($atWorkInsuranceRequest->all(), $id);
-        return new AtWorkInsuranceResource($atWorkInsurance);
+        return new AccidentWorkInsuranceResource($atWorkInsurance);
     }
 
     /**
