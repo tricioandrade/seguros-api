@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Insurance\Travel;
 
+use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Http\Requests\Insurance\Travel\TravelInsuranceRequest;
@@ -21,6 +22,7 @@ class TravelInsuranceController extends Controller
      *
      * @return AnonymousResourceCollection
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function index(): AnonymousResourceCollection
     {
@@ -32,6 +34,7 @@ class TravelInsuranceController extends Controller
      *
      * @param TravelInsuranceRequest $travelInsuranceRequest
      * @return TravelInsuranceResource
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function store(TravelInsuranceRequest $travelInsuranceRequest): TravelInsuranceResource
@@ -46,6 +49,7 @@ class TravelInsuranceController extends Controller
      *
      * @param int $id
      * @return TravelInsuranceResource
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function show(int $id): TravelInsuranceResource
@@ -60,6 +64,7 @@ class TravelInsuranceController extends Controller
      * @param TravelInsuranceRequest $travelInsuranceRequest
      * @param int $id
      * @return TravelInsuranceResource
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function update(TravelInsuranceRequest $travelInsuranceRequest, int $id): TravelInsuranceResource
@@ -74,6 +79,7 @@ class TravelInsuranceController extends Controller
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function destroy(int $id): mixed
@@ -86,6 +92,7 @@ class TravelInsuranceController extends Controller
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function forceDelete(int $id): mixed
@@ -98,6 +105,7 @@ class TravelInsuranceController extends Controller
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function restore(int $id): mixed

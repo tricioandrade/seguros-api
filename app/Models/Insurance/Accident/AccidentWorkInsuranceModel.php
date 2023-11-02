@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models\Insurance\Travel;
+namespace App\Models\Insurance\Accident;
 
+use App\Enums\Insurance\Vehicle\FractionationTypesEnum;
 use App\Models\Users\UserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TravelInsuranceModel extends Model
+class AccidentWorkInsuranceModel extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,7 +18,7 @@ class TravelInsuranceModel extends Model
      *
      * @var string
      */
-    protected $table = 'travel_insurance';
+    protected $table = 'accident_work_insurance';
 
     /**
      * The attributes that are mass assignable.
@@ -26,9 +27,10 @@ class TravelInsuranceModel extends Model
      */
     protected $fillable = [
         'user_id',
-        'destiny',
-        'duration',
-        'value',
+        'employees',
+        'eac',  // Economic Activity Code
+        'salary',
+        'value'
     ];
 
     /**
@@ -37,8 +39,8 @@ class TravelInsuranceModel extends Model
      * @var string[]
      */
     protected $casts = [
-        'salary' => 'decimal',
-        'value' => 'decimal'
+        'fractionation'  => FractionationTypesEnum::class,
+        'salary'  => 'decimal'
     ];
 
     /**

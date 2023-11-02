@@ -11,7 +11,7 @@ class TravelInsuranceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,10 @@ class TravelInsuranceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        return  [
+            'destiny',
+            'duration',
+            'value',
         ];
     }
 }
