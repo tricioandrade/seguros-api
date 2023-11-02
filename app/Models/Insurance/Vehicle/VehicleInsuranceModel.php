@@ -18,7 +18,7 @@ class VehicleInsuranceModel extends Model
      *
      * @var string
      */
-    protected $table = 'insurance';
+    protected $table = 'vehicle_insurance';
 
     /**
      * The attributes that are mass assignable.
