@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AtWorkInsuranceModel extends Model
+class AccidentWorkInsuranceModel extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -28,7 +28,7 @@ class AtWorkInsuranceModel extends Model
     protected $fillable = [
         'user_id',
         'employees',
-        'eac',
+        'eac',  // Economic Activity Code
         'salary',
         'value'
     ];

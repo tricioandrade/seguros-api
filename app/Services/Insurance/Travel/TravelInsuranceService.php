@@ -3,6 +3,7 @@
 namespace App\Services\Insurance\Travel;
 
 use App\Exceptions\Auth\UnauthorizedException;
+use App\Exceptions\DatabaseException;
 use App\Models\Insurance\Travel\TravelInsuranceModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,7 +22,9 @@ class TravelInsuranceService
     /**
      * Get all data from the database
      *
+     * @return TravelInsuranceModel|Collection
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function getAll(): TravelInsuranceModel|Collection
     {
@@ -32,11 +35,15 @@ class TravelInsuranceService
     /**
      * Create a new data in the database
      *
+     * @param array $attributes
+     * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function create(array $attributes) {
+    public function create(array $attributes): mixed
+    {
         if (!$this->isAdmin()) throw new UnauthorizedException();
-
+        $attributes = auth()->id();
         return $this->createData($attributes);
     }
 
@@ -45,6 +52,7 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return TravelInsuranceModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function getById(int $id): TravelInsuranceModel|Collection
@@ -59,6 +67,7 @@ class TravelInsuranceService
      * @param array $attributes
      * @param int $id
      * @return TravelInsuranceModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function update(array $attributes, int $id): TravelInsuranceModel|Collection
@@ -72,6 +81,7 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function delete(int $id): mixed
@@ -85,6 +95,7 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function forceDelete(int $id): mixed
@@ -98,6 +109,7 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function restore(int $id): mixed
