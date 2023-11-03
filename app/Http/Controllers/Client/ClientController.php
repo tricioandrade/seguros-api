@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Insurance;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\InsuranceRequest;
-use App\Http\Resources\Insurance\InsuranceResource;
-use App\Services\Insurance\InsuranceService;
+use App\Http\Requests\Client\ClientRequest;
+use App\Http\Resources\Client\ClientResource;
+use App\Services\Client\ClientService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class InsuranceController extends Controller
+class ClientController extends Controller
 {
 
     public function __construct(
-        public InsuranceService $insuranceService
+        public ClientService $clientService
     ){}
 
     /**
@@ -24,49 +24,49 @@ class InsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return InsuranceResource::collection($this->insuranceService->getAll());
+        return ClientResource::collection($this->clientService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
-     * @return InsuranceResource
+     * @param ClientRequest $clientRequest
+     * @return ClientResource
      * @throws UnauthorizedException
      */
-    public function store(InsuranceRequest $insuranceRequest): InsuranceResource
+    public function store(ClientRequest $clientRequest): ClientResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->create($insuranceRequest->all());
-        return new InsuranceResource($insurance);
+        $clientRequest->validated($clientRequest->all());
+        $client = $this->clientService->create($clientRequest->all());
+        return new ClientResource($client);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return InsuranceResource
+     * @return ClientResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): InsuranceResource
+    public function show(int $id): ClientResource
     {
-        $insurance = $this->insuranceService->getById($id);
-        return new InsuranceResource($insurance);
+        $client = $this->clientService->getById($id);
+        return new ClientResource($client);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
+     * @param ClientRequest $clientRequest
      * @param int $id
-     * @return InsuranceResource
+     * @return ClientResource
      * @throws UnauthorizedException
      */
-    public function update(InsuranceRequest $insuranceRequest, int $id): InsuranceResource
+    public function update(ClientRequest $clientRequest, int $id): ClientResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->update($insuranceRequest->all(), $id);
-        return new InsuranceResource($insurance);
+        $clientRequest->validated($clientRequest->all());
+        $client = $this->clientService->update($clientRequest->all(), $id);
+        return new ClientResource($client);
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        return $this->insuranceService->delete($id);
+        return $this->clientService->delete($id);
     }
 
     /**
@@ -90,7 +90,7 @@ class InsuranceController extends Controller
      */
     public function forceDelete(int $id): mixed
     {
-        return $this->insuranceService->forceDelete($id);
+        return $this->clientService->forceDelete($id);
     }
 
     /**
@@ -102,6 +102,6 @@ class InsuranceController extends Controller
      */
     public function restore(int $id): mixed
     {
-        return $this->insuranceService->restore($id);
+        return $this->clientService->restore($id);
     }
 }

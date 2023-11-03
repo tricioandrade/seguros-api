@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Insurance;
 
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\InsuranceRequest;
-use App\Http\Resources\Insurance\InsuranceResource;
-use App\Services\Insurance\InsuranceService;
+use App\Http\Requests\Insurance\ClaimsRequest;
+use App\Http\Resources\Insurance\ClaimsResource;
+use App\Services\Insurance\ClaimsService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class InsuranceController extends Controller
+class ClaimsController extends Controller
 {
 
     public function __construct(
-        public InsuranceService $insuranceService
+        public ClaimsService $claimsService
     ){}
 
     /**
@@ -24,49 +24,49 @@ class InsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return InsuranceResource::collection($this->insuranceService->getAll());
+        return ClaimsResource::collection($this->claimsService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
-     * @return InsuranceResource
+     * @param ClaimsRequest $claimsRequest
+     * @return ClaimsResource
      * @throws UnauthorizedException
      */
-    public function store(InsuranceRequest $insuranceRequest): InsuranceResource
+    public function store(ClaimsRequest $claimsRequest): ClaimsResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->create($insuranceRequest->all());
-        return new InsuranceResource($insurance);
+        $claimsRequest->validated($claimsRequest->all());
+        $claims = $this->claimsService->create($claimsRequest->all());
+        return new ClaimsResource($claims);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return InsuranceResource
+     * @return ClaimsResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): InsuranceResource
+    public function show(int $id): ClaimsResource
     {
-        $insurance = $this->insuranceService->getById($id);
-        return new InsuranceResource($insurance);
+        $claims = $this->claimsService->getById($id);
+        return new ClaimsResource($claims);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
+     * @param ClaimsRequest $claimsRequest
      * @param int $id
-     * @return InsuranceResource
+     * @return ClaimsResource
      * @throws UnauthorizedException
      */
-    public function update(InsuranceRequest $insuranceRequest, int $id): InsuranceResource
+    public function update(ClaimsRequest $claimsRequest, int $id): ClaimsResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->update($insuranceRequest->all(), $id);
-        return new InsuranceResource($insurance);
+        $claimsRequest->validated($claimsRequest->all());
+        $claims = $this->claimsService->update($claimsRequest->all(), $id);
+        return new ClaimsResource($claims);
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        return $this->insuranceService->delete($id);
+        return $this->claimsService->delete($id);
     }
 
     /**
@@ -90,7 +90,7 @@ class InsuranceController extends Controller
      */
     public function forceDelete(int $id): mixed
     {
-        return $this->insuranceService->forceDelete($id);
+        return $this->claimsService->forceDelete($id);
     }
 
     /**
@@ -102,6 +102,6 @@ class InsuranceController extends Controller
      */
     public function restore(int $id): mixed
     {
-        return $this->insuranceService->restore($id);
+        return $this->claimsService->restore($id);
     }
 }

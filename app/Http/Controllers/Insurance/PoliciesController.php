@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Insurance;
 
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\InsuranceRequest;
-use App\Http\Resources\Insurance\InsuranceResource;
-use App\Services\Insurance\InsuranceService;
+use App\Http\Requests\Insurance\PoliciesRequest;
+use App\Http\Resources\Insurance\PoliciesResource;
+use App\Services\Insurance\PoliciesService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class InsuranceController extends Controller
+class PoliciesController extends Controller
 {
 
     public function __construct(
-        public InsuranceService $insuranceService
+        public PoliciesService $policiesService
     ){}
 
     /**
@@ -24,49 +24,49 @@ class InsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return InsuranceResource::collection($this->insuranceService->getAll());
+        return PoliciesResource::collection($this->policiesService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
-     * @return InsuranceResource
+     * @param PoliciesRequest $policiesRequest
+     * @return PoliciesResource
      * @throws UnauthorizedException
      */
-    public function store(InsuranceRequest $insuranceRequest): InsuranceResource
+    public function store(PoliciesRequest $policiesRequest): PoliciesResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->create($insuranceRequest->all());
-        return new InsuranceResource($insurance);
+        $policiesRequest->validated($policiesRequest->all());
+        $policies = $this->policiesService->create($policiesRequest->all());
+        return new PoliciesResource($policies);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return InsuranceResource
+     * @return PoliciesResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): InsuranceResource
+    public function show(int $id): PoliciesResource
     {
-        $insurance = $this->insuranceService->getById($id);
-        return new InsuranceResource($insurance);
+        $policies = $this->policiesService->getById($id);
+        return new PoliciesResource($policies);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
+     * @param PoliciesRequest $policiesRequest
      * @param int $id
-     * @return InsuranceResource
+     * @return PoliciesResource
      * @throws UnauthorizedException
      */
-    public function update(InsuranceRequest $insuranceRequest, int $id): InsuranceResource
+    public function update(PoliciesRequest $policiesRequest, int $id): PoliciesResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->update($insuranceRequest->all(), $id);
-        return new InsuranceResource($insurance);
+        $policiesRequest->validated($policiesRequest->all());
+        $policies = $this->policiesService->update($policiesRequest->all(), $id);
+        return new PoliciesResource($policies);
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        return $this->insuranceService->delete($id);
+        return $this->policiesService->delete($id);
     }
 
     /**
@@ -90,7 +90,7 @@ class InsuranceController extends Controller
      */
     public function forceDelete(int $id): mixed
     {
-        return $this->insuranceService->forceDelete($id);
+        return $this->policiesService->forceDelete($id);
     }
 
     /**
@@ -102,6 +102,6 @@ class InsuranceController extends Controller
      */
     public function restore(int $id): mixed
     {
-        return $this->insuranceService->restore($id);
+        return $this->policiesService->restore($id);
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Insurance;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\InsuranceRequest;
-use App\Http\Resources\Insurance\InsuranceResource;
-use App\Services\Insurance\InsuranceService;
+use App\Http\Requests\Employee\EmployeeRequest;
+use App\Http\Resources\Employee\EmployeeResource;
+use App\Services\Employee\EmployeeService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class InsuranceController extends Controller
+class EmployeeController extends Controller
 {
 
     public function __construct(
-        public InsuranceService $insuranceService
+        public EmployeeService $employeeService
     ){}
 
     /**
@@ -24,49 +24,49 @@ class InsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return InsuranceResource::collection($this->insuranceService->getAll());
+        return EmployeeResource::collection($this->employeeService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
-     * @return InsuranceResource
+     * @param EmployeeRequest $employeeRequest
+     * @return EmployeeResource
      * @throws UnauthorizedException
      */
-    public function store(InsuranceRequest $insuranceRequest): InsuranceResource
+    public function store(EmployeeRequest $employeeRequest): EmployeeResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->create($insuranceRequest->all());
-        return new InsuranceResource($insurance);
+        $employeeRequest->validated($employeeRequest->all());
+        $employee = $this->employeeService->create($employeeRequest->all());
+        return new EmployeeResource($employee);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return InsuranceResource
+     * @return EmployeeResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): InsuranceResource
+    public function show(int $id): EmployeeResource
     {
-        $insurance = $this->insuranceService->getById($id);
-        return new InsuranceResource($insurance);
+        $employee = $this->employeeService->getById($id);
+        return new EmployeeResource($employee);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
+     * @param EmployeeRequest $employeeRequest
      * @param int $id
-     * @return InsuranceResource
+     * @return EmployeeResource
      * @throws UnauthorizedException
      */
-    public function update(InsuranceRequest $insuranceRequest, int $id): InsuranceResource
+    public function update(EmployeeRequest $employeeRequest, int $id): EmployeeResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->update($insuranceRequest->all(), $id);
-        return new InsuranceResource($insurance);
+        $employeeRequest->validated($employeeRequest->all());
+        $employee = $this->employeeService->update($employeeRequest->all(), $id);
+        return new EmployeeResource($employee);
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        return $this->insuranceService->delete($id);
+        return $this->employeeService->delete($id);
     }
 
     /**
@@ -90,7 +90,7 @@ class InsuranceController extends Controller
      */
     public function forceDelete(int $id): mixed
     {
-        return $this->insuranceService->forceDelete($id);
+        return $this->employeeService->forceDelete($id);
     }
 
     /**
@@ -102,6 +102,6 @@ class InsuranceController extends Controller
      */
     public function restore(int $id): mixed
     {
-        return $this->insuranceService->restore($id);
+        return $this->employeeService->restore($id);
     }
 }

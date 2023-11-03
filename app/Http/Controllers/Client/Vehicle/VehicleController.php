@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Insurance;
+namespace App\Http\Controllers\Client\Vehicle;
 
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Http\Requests\Insurance\InsuranceRequest;
-use App\Http\Resources\Insurance\InsuranceResource;
-use App\Services\Insurance\InsuranceService;
+use App\Http\Requests\Client\Vehicle\VehicleRequest;
+use App\Http\Resources\Client\Vehicle\VehicleResource;
+use App\Services\Client\Vehicle\VehicleService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class InsuranceController extends Controller
+class VehicleController extends Controller
 {
 
     public function __construct(
-        public InsuranceService $insuranceService
+        public VehicleService $vehicleService
     ){}
 
     /**
@@ -24,49 +24,49 @@ class InsuranceController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return InsuranceResource::collection($this->insuranceService->getAll());
+        return VehicleResource::collection($this->vehicleService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
-     * @return InsuranceResource
+     * @param VehicleRequest $vehicleRequest
+     * @return VehicleResource
      * @throws UnauthorizedException
      */
-    public function store(InsuranceRequest $insuranceRequest): InsuranceResource
+    public function store(VehicleRequest $vehicleRequest): VehicleResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->create($insuranceRequest->all());
-        return new InsuranceResource($insurance);
+        $vehicleRequest->validated($vehicleRequest->all());
+        $vehicle = $this->vehicleService->create($vehicleRequest->all());
+        return new VehicleResource($vehicle);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return InsuranceResource
+     * @return VehicleResource
      * @throws UnauthorizedException
      */
-    public function show(int $id): InsuranceResource
+    public function show(int $id): VehicleResource
     {
-        $insurance = $this->insuranceService->getById($id);
-        return new InsuranceResource($insurance);
+        $vehicle = $this->vehicleService->getById($id);
+        return new VehicleResource($vehicle);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param InsuranceRequest $insuranceRequest
+     * @param VehicleRequest $vehicleRequest
      * @param int $id
-     * @return InsuranceResource
+     * @return VehicleResource
      * @throws UnauthorizedException
      */
-    public function update(InsuranceRequest $insuranceRequest, int $id): InsuranceResource
+    public function update(VehicleRequest $vehicleRequest, int $id): VehicleResource
     {
-        $insuranceRequest->validated($insuranceRequest->all());
-        $insurance = $this->insuranceService->update($insuranceRequest->all(), $id);
-        return new InsuranceResource($insurance);
+        $vehicleRequest->validated($vehicleRequest->all());
+        $vehicle = $this->vehicleService->update($vehicleRequest->all(), $id);
+        return new VehicleResource($vehicle);
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        return $this->insuranceService->delete($id);
+        return $this->vehicleService->delete($id);
     }
 
     /**
@@ -90,7 +90,7 @@ class InsuranceController extends Controller
      */
     public function forceDelete(int $id): mixed
     {
-        return $this->insuranceService->forceDelete($id);
+        return $this->vehicleService->forceDelete($id);
     }
 
     /**
@@ -102,6 +102,6 @@ class InsuranceController extends Controller
      */
     public function restore(int $id): mixed
     {
-        return $this->insuranceService->restore($id);
+        return $this->vehicleService->restore($id);
     }
 }
