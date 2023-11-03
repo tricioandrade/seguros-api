@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Insurance\Travel;
+namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TravelInsuranceRequest extends FormRequest
+class ClientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,10 +21,8 @@ class TravelInsuranceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return  [
-            'destiny'   => 'required|string|max:255',
-            'duration'  => 'required|integer',
-            'value'     => 'required|numeric',
+        return [
+            //
         ];
     }
 }
