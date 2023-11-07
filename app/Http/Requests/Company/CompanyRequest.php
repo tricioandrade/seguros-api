@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Insurance\Policie;
+namespace App\Http\Requests\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PoliceStatusEnumRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class PoliceStatusEnumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'      => 'required|string',
+            'nif'       => 'required|string',
+            'address'   => 'required|string',
+            'door'      => 'required|string',
+            'phone'     => 'required|string',
+            'email'     => 'required|string|email',
         ];
     }
 }
