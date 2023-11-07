@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Http\Requests\Client\ClientRequest;
+use App\Http\Requests\Users\UserRequest;
 use App\Http\Resources\Client\ClientResource;
 use App\Services\Client\ClientService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -31,13 +33,16 @@ class ClientController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ClientRequest $clientRequest
+     * @param UserRequest $userRequest
      * @return ClientResource
-     * @throws UnauthorizedException
+     * @throws DatabaseException
      */
-    public function store(ClientRequest $clientRequest): ClientResource
+    public function store(ClientRequest $clientRequest, UserRequest $userRequest): ClientResource
     {
         $clientRequest->validated($clientRequest->all());
-        $client = $this->clientService->create($clientRequest->all());
+        $userRequest->validated($userRequest->all());
+
+        $client = $this->clientService->create($clientRequest->all(), $userRequest->all());
         return new ClientResource($client);
     }
 
@@ -58,17 +63,29 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param ClientRequest $clientRequest
-     * @param int $id
+     * @param UserRequest $userRequest
+     * @param int $clientId
      * @return ClientResource
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function update(ClientRequest $clientRequest, int $id): ClientResource
+    public function update(
+        ClientRequest $clientRequest,
+        UserRequest $userRequest,
+        int $clientId
+    ): ClientResource
     {
         $clientRequest->validated($clientRequest->all());
-        $client = $this->clientService->update($clientRequest->all(), $id);
+        $userRequest->validated($userRequest->all());
+
+        $client = $this->clientService->update(
+            $clientRequest->all(),
+            $userRequest->all(),
+            $clientId
+        );
+
         return new ClientResource($client);
     }
-
     /**
      * Remove the specified resource from storage.
      *

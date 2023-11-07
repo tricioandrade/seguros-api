@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Exceptions\Auth\LoginInvalidException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\Company\EmployeeResource;
+use App\Http\Resources\Employee\EmployeeResource;
 use App\Services\Auth\AuthService;
 
 class AuthController extends Controller

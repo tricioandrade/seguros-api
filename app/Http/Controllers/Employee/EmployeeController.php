@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Http\Requests\Employee\EmployeeRequest;
+use App\Http\Requests\Users\UserRequest;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Services\Employee\EmployeeService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -20,6 +22,7 @@ class EmployeeController extends Controller
      * Display a listing of the resource.
      *
      * @return AnonymousResourceCollection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function index(): AnonymousResourceCollection
@@ -33,11 +36,14 @@ class EmployeeController extends Controller
      * @param EmployeeRequest $employeeRequest
      * @return EmployeeResource
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
-    public function store(EmployeeRequest $employeeRequest): EmployeeResource
+    public function store(EmployeeRequest $employeeRequest, UserRequest $userRequest): EmployeeResource
     {
         $employeeRequest->validated($employeeRequest->all());
-        $employee = $this->employeeService->create($employeeRequest->all());
+        $userRequest->validated($userRequest->all());
+
+        $employee = $this->employeeService->create($employeeRequest->all(), $userRequest->all());
         return new EmployeeResource($employee);
     }
 
@@ -58,14 +64,26 @@ class EmployeeController extends Controller
      * Update the specified resource in storage.
      *
      * @param EmployeeRequest $employeeRequest
-     * @param int $id
+     * @param UserRequest $userRequest
+     * @param int $employeeId
      * @return EmployeeResource
      * @throws UnauthorizedException
      */
-    public function update(EmployeeRequest $employeeRequest, int $id): EmployeeResource
+    public function update(
+        EmployeeRequest $employeeRequest,
+        UserRequest $userRequest,
+        int $employeeId
+    ): EmployeeResource
     {
         $employeeRequest->validated($employeeRequest->all());
-        $employee = $this->employeeService->update($employeeRequest->all(), $id);
+        $userRequest->validated($userRequest->all());
+
+        $employee = $this->employeeService->update(
+            $employeeRequest->all(),
+            $userRequest->all(),
+            $employeeId
+        );
+
         return new EmployeeResource($employee);
     }
 
