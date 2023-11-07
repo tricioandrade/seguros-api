@@ -1,32 +1,29 @@
 <?php
 
-namespace App\Services\Insurance\Travel;
+namespace App\Services\Insurance\Claim;
 
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Exceptions\DatabaseException;
-use App\Models\Insurance\Travel\TravelInsuranceModel;
+use App\Models\Insurance\Claim\ClaimPhotosModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\Common\Auth\VerifyUserTrait;
 
-class TravelInsuranceService
+class ClaimPhotosService
 {
     use CrudTrait, VerifyUserTrait;
 
     public function __construct()
     {
         $this->relations    = [];
-        $this->model        = new TravelInsuranceModel();
+        $this->model        = new ClaimPhotosModel();
     }
 
     /**
      * Get all data from the database
      *
-     * @return TravelInsuranceModel|Collection
      * @throws UnauthorizedException
-     * @throws DatabaseException
      */
-    public function getAll(): TravelInsuranceModel|Collection
+    public function getAll(): ClaimPhotosModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getAllData();
@@ -35,15 +32,11 @@ class TravelInsuranceService
     /**
      * Create a new data in the database
      *
-     * @param array $attributes
-     * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function create(array $attributes): mixed
-    {
+    public function create(array $attributes) {
         if (!$this->isAdmin()) throw new UnauthorizedException();
-        $attributes = auth()->id();
+
         return $this->createData($attributes);
     }
 
@@ -51,11 +44,10 @@ class TravelInsuranceService
      * Get a data from the database by id
      *
      * @param int $id
-     * @return TravelInsuranceModel|Collection
-     * @throws DatabaseException
+     * @return ClaimPhotosModel|Collection
      * @throws UnauthorizedException
      */
-    public function getById(int $id): TravelInsuranceModel|Collection
+    public function getById(int $id): ClaimPhotosModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getByIdentity($id);
@@ -66,11 +58,10 @@ class TravelInsuranceService
      *
      * @param array $attributes
      * @param int $id
-     * @return TravelInsuranceModel|Collection
-     * @throws DatabaseException
+     * @return ClaimPhotosModel|Collection
      * @throws UnauthorizedException
      */
-    public function update(array $attributes, int $id): TravelInsuranceModel|Collection
+    public function update(array $attributes, int $id): ClaimPhotosModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return  $this->updateData($attributes, $id);
@@ -81,7 +72,6 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function delete(int $id): mixed
@@ -95,7 +85,6 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function forceDelete(int $id): mixed
@@ -109,7 +98,6 @@ class TravelInsuranceService
      *
      * @param int $id
      * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function restore(int $id): mixed

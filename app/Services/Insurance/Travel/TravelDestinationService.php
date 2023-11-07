@@ -1,37 +1,30 @@
 <?php
 
-namespace App\Services\Users;
+namespace App\Services\Insurance\Travel;
 
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Exceptions\DatabaseException;
-use App\Models\User\UserModel;
+use App\Models\Insurance\Travel\TravelDestinationModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\Common\Auth\VerifyUserTrait;
 
-class UserService
+class TravelDestinationService
 {
     use CrudTrait, VerifyUserTrait;
 
     public function __construct()
     {
-        $this->relations    = [
-            'employee',
-            'insurance',
-            'policy',
-        ];
-
-        $this->model        = new UserModel();
+        $this->relations    = [];
+        $this->model        = new TravelDestinationModel();
     }
 
     /**
      * Get all data from the database
      *
-     * @return UserModel|Collection
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function getAll(): UserModel|Collection
+    public function getAll(): TravelDestinationModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getAllData();
@@ -41,22 +34,10 @@ class UserService
      * Create a new data in the database
      *
      * @throws UnauthorizedException
-     * @throws DatabaseException
      */
     public function create(array $attributes) {
-        $user = $this->getByAnonymousInfo('email', $attributes['email'])->first();
-        if ($user) {
-            if (!$this->isAdmin()) throw new UnauthorizedException();
-            if ($user->deleted_at) {
-                $user->is_blocked   = $attributes['is_blocked'];
-                $user->is_admin     = $attributes['is_admin'];
-                $user->password     = $attributes['password'];
-
-                $user->save();
-                $user->restore();
-            }
-            return $user->load($this->relations);
-        }
+        if (!$this->isAdmin()) throw new UnauthorizedException();
+        $attributes->user_id = auth()->id();
         return $this->createData($attributes);
     }
 
@@ -64,11 +45,10 @@ class UserService
      * Get a data from the database by id
      *
      * @param int $id
-     * @return UserModel|Collection
+     * @return TravelDestinationModel|Collection
      * @throws UnauthorizedException
-     * @throws DatabaseException
      */
-    public function getById(int $id): UserModel|Collection
+    public function getById(int $id): TravelDestinationModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getByIdentity($id);
@@ -79,11 +59,11 @@ class UserService
      *
      * @param array $attributes
      * @param int $id
-     * @return UserModel|Collection
+     * @return TravelDestinationModel|Collection
      * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function update(array $attributes, int $id): UserModel|Collection
+    public function update(array $attributes, int $id): TravelDestinationModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return  $this->updateData($attributes, $id);
@@ -94,8 +74,8 @@ class UserService
      *
      * @param int $id
      * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function delete(int $id): mixed
     {

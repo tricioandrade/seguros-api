@@ -1,37 +1,36 @@
 <?php
 
-namespace App\Services\Users;
+namespace App\Services\Client;
 
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Exceptions\DatabaseException;
-use App\Models\User\UserModel;
+use App\Models\Client\ClientModel;
+use App\Services\Users\UserService;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\Common\Auth\VerifyUserTrait;
+use Illuminate\Support\Facades\DB;
 
-class UserService
+class ClientService
 {
     use CrudTrait, VerifyUserTrait;
 
-    public function __construct()
+    public function __construct(
+        protected UserService $userService
+    )
     {
-        $this->relations    = [
-            'employee',
-            'insurance',
-            'policy',
-        ];
-
-        $this->model        = new UserModel();
+        $this->relations    = ['user'];
+        $this->model        = new ClientModel();
     }
 
     /**
      * Get all data from the database
      *
-     * @return UserModel|Collection
+     * @return ClientModel|Collection
      * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function getAll(): UserModel|Collection
+    public function getAll(): ClientModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getAllData();
@@ -40,35 +39,39 @@ class UserService
     /**
      * Create a new data in the database
      *
-     * @throws UnauthorizedException
+     * @param array $clientAttributes
+     * @param array $userAttributes
+     * @return mixed
      * @throws DatabaseException
      */
-    public function create(array $attributes) {
-        $user = $this->getByAnonymousInfo('email', $attributes['email'])->first();
-        if ($user) {
-            if (!$this->isAdmin()) throw new UnauthorizedException();
-            if ($user->deleted_at) {
-                $user->is_blocked   = $attributes['is_blocked'];
-                $user->is_admin     = $attributes['is_admin'];
-                $user->password     = $attributes['password'];
+    public function create(
+        array $clientAttributes,
+        array $userAttributes
+    ): mixed
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->userService->create($userAttributes);
+            $clientAttributes['user_id'] = $user->id;
+            $result = $this->createData($clientAttributes);
 
-                $user->save();
-                $user->restore();
-            }
-            return $user->load($this->relations);
+            DB::commit();
+            return $result;
+        }catch (\Throwable $exception){
+            DB::rollBack();
+            throw new DatabaseException($exception->getMessage());
         }
-        return $this->createData($attributes);
     }
 
     /**
      * Get a data from the database by id
      *
      * @param int $id
-     * @return UserModel|Collection
-     * @throws UnauthorizedException
+     * @return ClientModel|Collection
      * @throws DatabaseException
+     * @throws UnauthorizedException
      */
-    public function getById(int $id): UserModel|Collection
+    public function getById(int $id): ClientModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
         return $this->getByIdentity($id);
@@ -77,18 +80,32 @@ class UserService
     /**
      * Update a specific data in the database
      *
-     * @param array $attributes
+     * @param array $clientAttributes
+     * @param array $userAttributes
      * @param int $id
-     * @return UserModel|Collection
+     * @return ClientModel|Collection
      * @throws DatabaseException
      * @throws UnauthorizedException
      */
-    public function update(array $attributes, int $id): UserModel|Collection
+    public function update(
+        array $clientAttributes,
+        array $userAttributes,
+        int $id
+    ): ClientModel|Collection
     {
         if (!$this->isAdmin()) throw new UnauthorizedException();
-        return  $this->updateData($attributes, $id);
-    }
+        DB::beginTransaction();
+        try {
+            $client = $this->updateData($clientAttributes, $id);
+            $this->userService->update($userAttributes, $client->user_id);
 
+            DB::commit();
+            return $client;
+        }catch (\Throwable $throwable){
+            DB::rollBack();
+            throw new DatabaseException($throwable->getMessage());
+        }
+    }
     /**
      * Trash a specified data in the database
      *
@@ -122,7 +139,6 @@ class UserService
      *
      * @param int $id
      * @return mixed
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function restore(int $id): mixed
