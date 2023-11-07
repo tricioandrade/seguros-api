@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Enums\User;
+namespace App\Enums\Client\Vehicle;
 
-enum UserGenderEnum: string
+enum OwnershipStatusEnum: string
 {
-    case MALE = 'Homem';
-    case FEMALE = 'Mulher';
-
+    case OWNED      = 'Proprietário';
+    case LEASED     = 'Alugado';
+    case FINNANCED  = 'Financiado';
+    case COMMERCIAL = 'Comercial';
+    case OTHER      = 'Outro';
     /**
      * Return all cases values as array
      *

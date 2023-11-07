@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Enums\User;
+namespace App\Enums\Insurance\Claim;
 
-enum UserGenderEnum: string
+enum ClaimStatusEnum: string
 {
-    case MALE = 'Homem';
-    case FEMALE = 'Mulher';
+
+    case EVALUATION = 'Em avaliação';
+    case APPROVED   = 'Aprovado';
+    case DENIED     = 'Negado';
+
 
     /**
      * Return all cases values as array

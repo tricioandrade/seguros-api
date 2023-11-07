@@ -2,8 +2,17 @@
 
 namespace App\Enums\Client\Vehicle;
 
-enum VehicleConditionEnum
+enum VehicleConditionEnum: string
 {
+    case NEW        = 'Novo';
+    case USED       = 'Usado';
+    case SALVAGE    = 'Sinistrado';
+    case REBUILT    = 'Reconstruído';
+    case LIKE_NEW   = 'Como Novo';
+    case EXCELLENT  = 'Excelente';
+    case GOOD       = 'Bom';
+    case FAIR       = 'Regular';
+    case POOR       = 'Ruim';
 
     /**
      * Return all cases values as array
