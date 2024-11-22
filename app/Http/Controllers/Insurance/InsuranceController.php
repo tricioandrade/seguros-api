@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Insurance;
 
-use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
 use App\Exceptions\Auth\UnauthorizedException;
 use App\Http\Requests\Insurance\InsuranceRequest;
@@ -21,7 +20,6 @@ class InsuranceController extends Controller
      * Display a listing of the resource.
      *
      * @return AnonymousResourceCollection
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function index(): AnonymousResourceCollection
@@ -35,7 +33,6 @@ class InsuranceController extends Controller
      * @param InsuranceRequest $insuranceRequest
      * @return InsuranceResource
      * @throws UnauthorizedException
-     * @throws DatabaseException
      */
     public function store(InsuranceRequest $insuranceRequest): InsuranceResource
     {
@@ -49,7 +46,6 @@ class InsuranceController extends Controller
      *
      * @param int $id
      * @return InsuranceResource
-     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function show(int $id): InsuranceResource

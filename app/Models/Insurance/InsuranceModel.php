@@ -3,10 +3,12 @@
 namespace App\Models\Insurance;
 
 use App\Enums\Insurance\InsuranceTypesEnum;
-use App\Models\Users\UserModel;
+use App\Enums\Insurance\Vehicle\FractionationTypesEnum;
+use App\Models\User\UserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InsuranceModel extends Model
@@ -14,7 +16,7 @@ class InsuranceModel extends Model
     use HasFactory, SoftDeletes;
 
     /**
-     * The attributes that is table name.
+     * The attribute that is table name.
      *
      * @var string
      */
@@ -27,8 +29,18 @@ class InsuranceModel extends Model
      */
     protected $fillable = [
         'user_id',
-        'type',
         'description',
+        'destiny',
+        'duration',
+        'value',
+        'vehicle_category',
+        'cylinder_capacity',
+        'employees',
+        'eac',
+        'salary',
+        'type',
+        'fractionation',
+        'value'
     ];
 
     /**
@@ -37,7 +49,8 @@ class InsuranceModel extends Model
      * @var string[]
      */
     protected $casts = [
-        'type'  => InsuranceTypesEnum::class
+        'type'          => InsuranceTypesEnum::class,
+        'fractionation' => FractionationTypesEnum::class
     ];
 
     /**
@@ -48,5 +61,15 @@ class InsuranceModel extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(UserModel::class, 'user_id');
+    }
+
+    /**
+     * The relationship that has many on Policies
+     *
+     * @return HasMany
+     */
+    public function policy(): HasMany
+    {
+        return $this->hasMany(PoliciesModel::class, 'insurance_id');
     }
 }

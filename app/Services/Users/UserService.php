@@ -3,7 +3,8 @@
 namespace App\Services\Users;
 
 use App\Exceptions\Auth\UnauthorizedException;
-use App\Models\Users\UserModel;
+use App\Exceptions\DatabaseException;
+use App\Models\User\UserModel;
 use App\Traits\Essentials\Database\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\Common\Auth\VerifyUserTrait;
@@ -14,13 +15,20 @@ class UserService
 
     public function __construct()
     {
-        $this->relations    = [];
+        $this->relations    = [
+            'employee',
+            'insurance',
+            'policy',
+        ];
+
         $this->model        = new UserModel();
     }
 
     /**
      * Get all data from the database
      *
+     * @return UserModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function getAll(): UserModel|Collection
@@ -33,10 +41,22 @@ class UserService
      * Create a new data in the database
      *
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function create(array $attributes) {
-        if (!$this->isAdmin()) throw new UnauthorizedException();
+        $user = $this->getByAnonymousInfo('email', $attributes['email'])->first();
+        if ($user) {
+            if (!$this->isAdmin()) throw new UnauthorizedException();
+            if ($user->deleted_at) {
+                $user->is_blocked   = $attributes['is_blocked'];
+                $user->is_admin     = $attributes['is_admin'];
+                $user->password     = $attributes['password'];
 
+                $user->save();
+                $user->restore();
+            }
+            return $user->load($this->relations);
+        }
         return $this->createData($attributes);
     }
 
@@ -46,6 +66,7 @@ class UserService
      * @param int $id
      * @return UserModel|Collection
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function getById(int $id): UserModel|Collection
     {
@@ -59,6 +80,7 @@ class UserService
      * @param array $attributes
      * @param int $id
      * @return UserModel|Collection
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function update(array $attributes, int $id): UserModel|Collection
@@ -72,6 +94,7 @@ class UserService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function delete(int $id): mixed
@@ -85,6 +108,7 @@ class UserService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function forceDelete(int $id): mixed
@@ -98,6 +122,7 @@ class UserService
      *
      * @param int $id
      * @return mixed
+     * @throws DatabaseException
      * @throws UnauthorizedException
      */
     public function restore(int $id): mixed

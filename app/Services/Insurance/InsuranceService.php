@@ -23,8 +23,8 @@ class InsuranceService
      * Get all data from the database
      *
      * @return InsuranceModel|Collection
-     * @throws DatabaseException
      * @throws UnauthorizedException
+     * @throws DatabaseException
      */
     public function getAll(): InsuranceModel|Collection
     {
@@ -52,8 +52,8 @@ class InsuranceService
      *
      * @param int $id
      * @return InsuranceModel|Collection
-     * @throws UnauthorizedException
      * @throws DatabaseException
+     * @throws UnauthorizedException
      */
     public function getById(int $id): InsuranceModel|Collection
     {

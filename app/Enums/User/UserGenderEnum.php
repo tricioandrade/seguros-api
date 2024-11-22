@@ -2,8 +2,10 @@
 
 namespace App\Enums\User;
 
-enum UserGenderEnum
+enum UserGenderEnum: string
 {
+    case MALE = 'Homem';
+    case FEMALE = 'Mulher';
 
     /**
      * Return all cases values as array
